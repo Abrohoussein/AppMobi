@@ -1,0 +1,361 @@
+#:import ZbarCam kivy_garden.zbarcam.ZBarCam
+
+<MyScreenManager>:
+    Screen:
+        name: "home_screen"
+        HomeScreen:
+    Screen:
+        name: "inscription_form_page"
+        InscriptionForm:
+    Screen:
+        name: "qr_code_page"
+        QRcode:
+    Screen:
+        name: "connexion_page"
+        Connexion:
+    Screen:
+        name: "product_catalog_page"
+        ProductCatalog:
+    Screen:
+        name: "product_details_page"
+        ProductDetails:
+
+<HomeScreen>:
+
+    # right, left, center
+    anchor_x: "center"
+    # bottom, top, center
+    anchor_y: "center"
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1  # Couleur de fond noir
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        size_hint_y: 1
+        Image:
+            keep_ratio: False
+            allow_stretch: True
+            source: "Im/image2.jpg"
+            size: self.parent.size
+            pos: self.parent.pos
+
+    BoxLayout:
+        orientation: "vertical"
+
+        spacing: "50dp"
+        size_hint: .3, .5
+        Label:
+            text: "PayTonKawa "
+            font_size: '44sp'
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+
+        Button:
+            text: "INSCRIPTION"
+            background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en marron
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+            on_press: app.manager.push("inscription_form_page")
+
+        Button:
+            text: "Scannez le QR Code"
+            background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en marron
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+            on_press: app.manager.push("qr_code_page")
+
+
+<Connexion>:
+
+    # right, left, center
+    anchor_x: "center"
+    # bottom, top, center
+    anchor_y: "center"
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 1  # Couleur de fond noir
+        Rectangle:
+            pos: self.pos
+            size: self.size
+    FloatLayout:
+        size_hint_y: 1
+
+        Image:
+            keep_ratio: False
+            allow_stretch: True
+            source: "Im/image2.jpg"
+
+            size: self.parent.size
+            pos: self.parent.pos
+        Button:
+            text: "< Retour"
+            halign: "left"
+            size_hint: 0.08, 0.08
+            pos_hint: {"x": 0, "top": 1}
+            background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en dégradé de marron
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte blanc
+            on_press: app.manager.push("home_screen")
+
+    BoxLayout:
+        orientation: "vertical"
+
+        spacing: "50dp"
+        size_hint: .3, .5
+        Label:
+            text: "Inscription terminé  "
+            font_size: '20sp'
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+        Label:
+            text: "Votre QR code vous a été envoyé par e-mail \n          Scannez-le pour vous connecter."
+            font_size: '20sp'
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+
+        Button:
+            text: "CONNEXION"
+            background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en marron
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+            on_press: app.manager.push("qr_code_page")
+
+
+<QRcode>:
+    BoxLayout:
+        orientation : "vertical"
+        Button:
+            text: "< Retour "
+            size_hint : 0.8, None
+            size: "640dp", "50dp"
+            pos_hint: { "center_x" : 0.5 }
+            on_press : app.manager.pop()
+            background_color : "A76051"
+        Label:
+            size_hint : None, None
+        ZBarCam:
+            id:qrcodecam
+            resolution : 640, 480
+        Label:
+            text : "Mon label"
+            size_hint : None, None
+            text : ' '.join([str(symbol.data) for symbol in qrcodecam.symbols])
+            background_color : "9A5F45"
+        Button:
+            text: "Scanner"
+            size_hint : 0.8, None
+            size: "640dp", "50dp"
+            pos_hint: { "center_x" : 0.5 }
+            on_press : root.authentification(app.manager)
+            background_color : "A76051"
+        Label:
+            size_hint : None, None
+
+<InscriptionForm>:
+    orientation: 'vertical'
+    spacing: "20dp"
+    padding:'50dp'
+
+    BoxLayout:
+        orientation:'vertical'
+        Label:
+            text:'Authentifiez-Vous'
+            font_size: '40dp'
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+
+    TextInput:
+        id: input_name
+        multiline:False
+        hint_text:"Nom"
+        size_hint: None,None
+        size_hint_x: 1
+        height: "40dp"
+        font_size:"23dp"
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        background_color: 0.96, 0.87, 0.70, 1
+        hint_text_color: 0.44, 0.26, 0.14, 1
+
+    TextInput:
+        id: input_firstname
+        multiline:False
+        hint_text:"Prénom"
+        size_hint: None,None
+        size_hint_x: 1
+        height: "40dp"
+        font_size:"23dp"
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        background_color: 0.96, 0.87, 0.70, 1
+        hint_text_color: 0.44, 0.26, 0.14, 1
+
+    TextInput:
+        id: input_username
+        multiline:False
+        hint_text:"Pseudo"
+        size_hint: None,None
+        size_hint_x: 1
+        height: "40dp"
+        font_size:"23dp"
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        background_color: 0.96, 0.87, 0.70, 1
+        hint_text_color: 0.44, 0.26, 0.14, 1
+
+    TextInput:
+        id: input_mail
+        multiline:False
+        hint_text:"E-mail"
+        size_hint: None,None
+        size_hint_x: 1
+        height: "40dp"
+        font_size:"23dp"
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        background_color: 0.96, 0.87, 0.70, 1
+        hint_text_color: 0.44, 0.26, 0.14, 1
+
+    TextInput:
+        id: input_pwd
+        multiline:False
+        hint_text:"Mot de passe"
+        size_hint: None,None
+        size_hint_x: 1
+        height: "40dp"
+        font_size:"23dp"
+        password:True
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        background_color: 0.96, 0.87, 0.70, 1
+        hint_text_color: 0.44, 0.26, 0.14, 1
+
+    Label:
+        id: lbl
+        text:''
+        font_size: '15dp'
+        color: 0.96, 0.87, 0.70, 1  # Couleur du texte en beige clair
+
+    Button:
+        size_hint: .5,None
+        height:'50dp'
+        text:'VALIDER'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en dégradé de marron
+        color: 0.96, 0.87, 0.70, 1  # Couleur du texte blanc
+        on_press: root.get_inputs()
+
+    Button:
+        size_hint: .5,None
+        height:'50dp'
+        text:'RETOUR'
+        pos_hint: {'center_x': 0.5, 'center_y': 0.5}
+        background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en dégradé de marron
+        color: 0.96, 0.87, 0.70, 1  # Couleur du texte blanc
+        on_press: app.manager.pop()
+
+<ProductCatalog@BoxLayout>:
+    orientation: "vertical"
+    padding: "10dp"
+    spacing: "10dp"
+    canvas.before:
+        Color:
+            rgba: 0, 0, 0, 0  # Couleur de fond noir
+        Rectangle:
+            pos: self.pos
+            size: self.size
+
+    FloatLayout:
+        size_hint_y: 0.35
+
+        Image:
+            keep_ratio: False
+            allow_stretch: True
+            source: "Im/differents-cafes-1024x683-c-default.jpg"
+            size_hint: 1, 1
+            pos_hint: {"x": 0, "y": 0}
+
+        Button:
+            text: "< Retour"
+            halign: "left"
+            size_hint: 0.1, 0.15
+            pos_hint: {"x": 0, "top": 1}
+            background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en dégradé de marron
+            color: 0.96, 0.87, 0.70, 1  # Couleur du texte blanc
+            on_press: app.manager.pop()
+
+    ScrollView:
+        size_hint_y: 0.65
+        BoxLayout:
+            id: product_list
+            orientation: "vertical"
+            size_hint_y: None
+            height: self.minimum_height
+
+
+            # Exemple de produit
+            BoxLayout:
+                orientation: "horizontal"
+                size_hint_y: None
+                height: "150dp"
+
+                Image:
+                    keep_ratio: False
+                    allow_stretch: True
+                    size_hint_x: 0.4
+                    source: "Im/brx_postcardDeskLarge.jpg"
+
+                Label:
+                    text: "Nom du produit"
+                    font_size: '18sp'
+                    color: 0.44, 0.26, 0.14, 1  # Couleur du texte en dégradé de marron
+                    size_hint_x: 0.25
+
+                Label:
+                    text: "Prix du produit"
+                    font_size: '18sp'
+                    color: 0.44, 0.26, 0.14, 1  # Couleur du texte en dégradé de marron
+                    size_hint_x: 0.2
+
+                Button:
+                    text: "Détails"
+                    size_hint_x: 0.15
+                    background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en dégradé de marron
+                    color: 0.96, 0.87, 0.70, 1  # Couleur du texte blanc
+                    on_press:
+                        app.manager.push("product_details_page")
+
+
+<ProductDetails@BoxLayout>:
+    orientation: "vertical"
+    padding: "10dp"
+    spacing: "10dp"
+
+    BoxLayout:
+        size_hint_y: 0.05
+        Button:
+            text: "< Retour"
+            halign: "left"
+            size_hint_x: 0.1
+            background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en dégradé de marron
+            color: 0.96, 0.87, 0.70, 1 # Couleur du texte blanc
+            on_press: app.manager.pop()
+        Widget:
+            size_hint_x: 0.9
+
+    BoxLayout:
+        orientation: "horizontal"
+        spacing: "10dp"
+        Image:
+            id: product_image
+            keep_ratio: False
+            allow_stretch: True
+            size_hint_x: 0.5
+        BoxLayout:
+            orientation: "vertical"
+            size_hint_x: 0.5
+            Label:
+                id: product_name
+                text: "Nom du produit"
+                size_hint: 1, .3
+                color: 0.31, 0.18, 0.09, 1  # Couleur du texte marron foncé
+            Label:
+                id: product_description
+                text: "Description du produit"
+                color: 0.31, 0.18, 0.09, 1  # Couleur du texte marron foncé
+            Button:
+                text: ""
+                background_color: 0.44, 0.26, 0.14, 1  # Couleur du bouton en dégradé de marron
+                color: 0.96, 0.87, 0.70, 1  # Couleur du texte blanc
+                on_press: root.buy_product()
+                size_hint: 1, .2
+
